@@ -37,10 +37,10 @@ function Studio() {
   ).length;
 
   useEffect(() => {
-    if (state.issues.length > 0 && panel === "issues") return;
-    if (state.phase === "HUMAN_REVIEW" || state.phase === "READY_TO_APPLY") setPanel("proposals");
+    if (state.phase === "BASELINE" || state.phase === "SCANNED") setPanel("issues");
+    if (["PROPOSALS_STAGED", "HUMAN_REVIEW", "READY_TO_APPLY"].includes(state.phase)) setPanel("proposals");
     if (state.phase === "VERIFIED") setPanel("journey");
-  }, [state.phase, state.issues.length, panel]);
+  }, [state.phase]);
 
   const currentPhaseIndex = Math.max(
     0,

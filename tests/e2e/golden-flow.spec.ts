@@ -47,6 +47,12 @@ test("baseline → reject → revise → apply → verified → export", async (
   await page.getByRole("button", { name: /Export JSON/i }).click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/^inclusivepatch-patch-v2\.json$/);
+
+  await page
+    .getByRole("navigation", { name: "Inspector panels" })
+    .getByRole("button", { name: /Activity/ })
+    .click();
+  await expect(page.getByText("Immutable local history")).toBeVisible();
 });
 
 test("reset is reproducible", async ({ page }) => {
