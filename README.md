@@ -4,7 +4,11 @@
 
 [![CI](https://github.com/1aifanatic/accesstwin-webmcp-challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/1aifanatic/accesstwin-webmcp-challenge/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-173c30.svg)](LICENSE)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f48120.svg)](https://workers.cloudflare.com/)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Live-f48120.svg)](https://accesstwin.aiconic-innovations.workers.dev)
+
+**Live application:** <https://accesstwin.aiconic-innovations.workers.dev>
+
+**Public source:** <https://github.com/1aifanatic/accesstwin-webmcp-challenge>
 
 ![AccessTwin workspace showing the deliberately inaccessible checkout and shared review inspector](docs/screenshots/workspace.png)
 

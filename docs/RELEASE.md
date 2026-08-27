@@ -5,9 +5,9 @@ This file is updated when the production deployment and repository tag are creat
 | Field | Value |
 | --- | --- |
 | Release | `v1.0.0-submission` |
-| Git commit | Pending final release commit |
+| Git commit | Tagged as `v1.0.0-submission`; full SHA recorded in the GitHub release |
 | Cloudflare Worker | `accesstwin` |
-| Cloudflare version | Pending deployment |
-| Production URL | Pending deployment |
+| Cloudflare version | Recorded in the GitHub release after the final deploy |
+| Production URL | <https://accesstwin.aiconic-innovations.workers.dev> |
 | Repository | <https://github.com/1aifanatic/accesstwin-webmcp-challenge> |
 | Freeze rule | Do not modify repository, live site, or submission during judging. |
