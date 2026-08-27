@@ -2,7 +2,7 @@ import type { WorkspaceState } from "../domain/types";
 import { compareVersions } from "../domain/workspaceEngine";
 
 export interface PatchManifest {
-  product: "AccessTwin";
+  product: "InclusivePatch";
   exportedAt: string;
   checkoutVersion: number;
   phase: WorkspaceState["phase"];
@@ -27,7 +27,7 @@ export interface PatchManifest {
 
 export function buildPatchManifest(state: WorkspaceState): PatchManifest {
   return {
-    product: "AccessTwin",
+    product: "InclusivePatch",
     exportedAt: new Date().toISOString(),
     checkoutVersion: state.checkoutVersion,
     phase: state.phase,
@@ -69,7 +69,7 @@ export function manifestAsMarkdown(manifest: PatchManifest): string {
         .map((proposal) => `- ${proposal.proposalId} (${proposal.issueId}): ${proposal.reason}`)
         .join("\n")
     : "- None";
-  return `# AccessTwin patch manifest
+  return `# InclusivePatch patch manifest
 
 - Exported: ${manifest.exportedAt}
 - Checkout version: ${manifest.checkoutVersion}
@@ -108,7 +108,7 @@ export function downloadManifest(state: WorkspaceState, format: "json" | "markdo
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `accesstwin-patch-v${state.checkoutVersion}.${extension}`;
+  anchor.download = `inclusivepatch-patch-v${state.checkoutVersion}.${extension}`;
   anchor.click();
   URL.revokeObjectURL(url);
   return anchor.download;

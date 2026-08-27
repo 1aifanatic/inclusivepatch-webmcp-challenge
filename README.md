@@ -1,24 +1,24 @@
-# AccessTwin
+# InclusivePatch
 
 > Repair accessibility barriers with an agent, approve every change, and prove the keyboard journey works.
 
-[![CI](https://github.com/1aifanatic/accesstwin-webmcp-challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/1aifanatic/accesstwin-webmcp-challenge/actions/workflows/ci.yml)
+[![CI](https://github.com/1aifanatic/inclusivepatch-webmcp-challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/1aifanatic/inclusivepatch-webmcp-challenge/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-173c30.svg)](LICENSE)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Live-f48120.svg)](https://accesstwin.aiconic-innovations.workers.dev)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Live-f48120.svg)](https://inclusivepatch.aiconic-innovations.workers.dev)
 
-**Live application:** <https://accesstwin.aiconic-innovations.workers.dev>
+**Live application:** <https://inclusivepatch.aiconic-innovations.workers.dev>
 
-**Public source:** <https://github.com/1aifanatic/accesstwin-webmcp-challenge>
+**Public source:** <https://github.com/1aifanatic/inclusivepatch-webmcp-challenge>
 
-![AccessTwin workspace showing the deliberately inaccessible checkout and shared review inspector](docs/screenshots/workspace.png)
+![InclusivePatch workspace showing the deliberately inaccessible checkout and shared review inspector](docs/screenshots/workspace.png)
 
-AccessTwin is a WebMCP-powered accessibility remediation workspace where a developer and ChatGPT repair a deliberately broken checkout together. The app exposes narrow site tools for scanning, inspecting evidence, staging bounded remediations, applying only current-version human approvals, replaying a deterministic keyboard journey, and exporting an auditable patch manifest.
+InclusivePatch is a WebMCP-powered accessibility remediation workspace where a developer and ChatGPT repair a deliberately broken checkout together. The app exposes narrow site tools for scanning, inspecting evidence, staging bounded remediations, applying only current-version human approvals, replaying a deterministic keyboard journey, and exporting an auditable patch manifest.
 
-The checkout and all customer details are synthetic. AccessTwin is a focused demonstration—not an accessibility certification product.
+The checkout and all customer details are synthetic. InclusivePatch is a focused demonstration—not an accessibility certification product.
 
 ## Why this needs WebMCP
 
-Traditional scanners stop at findings. AccessTwin keeps the finding, proposed fix, human decision, applied configuration, replay evidence, and exported audit record in one visible page state. The agent operates that same state through `document.modelContext.registerTool`; there is no embedded chatbot, OpenAI API call, arbitrary DOM mutation tool, or hidden server workflow.
+Traditional scanners stop at findings. InclusivePatch keeps the finding, proposed fix, human decision, applied configuration, replay evidence, and exported audit record in one visible page state. The agent operates that same state through `document.modelContext.registerTool`; there is no embedded chatbot, OpenAI API call, arbitrary DOM mutation tool, or hidden server workflow.
 
 The critical collaboration moment is deliberately human-controlled: a technically accessible but contextually weak final-action label can be rejected, revised, approved, and traced. The rejected value is never applied.
 
@@ -151,7 +151,7 @@ tests/
 
 ## Competition work declaration
 
-AccessTwin was implemented for the OpenAI WebMCP Challenge during the official submission period beginning August 25, 2026. All AccessTwin product logic, synthetic checkout fixtures, accessibility probes, remediation workflow, journey replay, approval controls, and interface components in this repository were created for this submission. The project uses official Cloudflare and Chrome WebMCP documentation as implementation references.
+InclusivePatch was implemented for the OpenAI WebMCP Challenge during the official submission period beginning August 25, 2026. All InclusivePatch product logic, synthetic checkout fixtures, accessibility probes, remediation workflow, journey replay, approval controls, and interface components in this repository were created for this submission. The project uses official Cloudflare and Chrome WebMCP documentation as implementation references.
 
 Third-party packages and licenses are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Security guidance is in [SECURITY.md](SECURITY.md), and contribution instructions are in [CONTRIBUTING.md](CONTRIBUTING.md).
 

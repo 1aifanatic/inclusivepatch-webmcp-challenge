@@ -19,4 +19,4 @@ Please open a private GitHub security advisory rather than a public issue for a 
 - Browser exports are local downloads. Reset removes the saved competition state and restores the fixture contract.
 - Cloudflare serves restrictive response headers from `public/_headers`.
 
-AccessTwin is a synthetic demonstration and does not provide accessibility certification or legal compliance advice.
+InclusivePatch is a synthetic demonstration and does not provide accessibility certification or legal compliance advice.

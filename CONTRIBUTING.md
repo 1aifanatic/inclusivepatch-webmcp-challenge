@@ -1,6 +1,6 @@
 # Contributing
 
-AccessTwin is intentionally scope-limited for the challenge submission. Contributions should improve reliability, accessibility of the studio shell, test coverage, documentation, or judge comprehension without expanding into arbitrary-site scanning, authentication, persistence services, source rewriting, or certification claims.
+InclusivePatch is intentionally scope-limited for the challenge submission. Contributions should improve reliability, accessibility of the studio shell, test coverage, documentation, or judge comprehension without expanding into arbitrary-site scanning, authentication, persistence services, source rewriting, or certification claims.
 
 ## Development
 

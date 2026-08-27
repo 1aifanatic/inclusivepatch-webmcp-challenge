@@ -60,7 +60,7 @@ function allDefinitions(api: WorkspaceApi): Record<string, SiteToolDefinition> {
   return {
     get_workspace_state: {
       name: "get_workspace_state",
-      title: "Get AccessTwin workspace state",
+      title: "Get InclusivePatch workspace state",
       description: "Read the current phase, version, findings, proposals, selection, and journey result before planning the next action.",
       inputSchema: JSON_SCHEMAS.empty,
       annotations: { readOnlyHint: true },

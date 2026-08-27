@@ -1,6 +1,6 @@
 # Third-party notices
 
-AccessTwin uses the packages below. Versions shown are those resolved by `pnpm-lock.yaml` on August 27, 2026. Transitive dependencies and their license metadata remain available in the lockfile and installed package manifests.
+InclusivePatch uses the packages below. Versions shown are those resolved by `pnpm-lock.yaml` on August 27, 2026. Transitive dependencies and their license metadata remain available in the lockfile and installed package manifests.
 
 | Package | Resolved version | License | Use |
 | --- | ---: | --- | --- |

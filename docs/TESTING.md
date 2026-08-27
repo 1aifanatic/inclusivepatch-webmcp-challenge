@@ -1,4 +1,4 @@
-# Testing AccessTwin
+# Testing InclusivePatch
 
 ## Automated evidence
 

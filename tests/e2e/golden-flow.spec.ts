@@ -11,7 +11,7 @@ declare global {
 
 test("baseline → reject → revise → apply → verified → export", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "AccessTwin" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "InclusivePatch" })).toBeVisible();
   await expect(page.getByText(/WebMCP unavailable/i)).toBeVisible();
 
   await page.getByRole("button", { name: /Run journey/i }).click();
@@ -46,7 +46,7 @@ test("baseline → reject → revise → apply → verified → export", async (
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: /Export JSON/i }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toMatch(/^accesstwin-patch-v2\.json$/);
+  expect(download.suggestedFilename()).toMatch(/^inclusivepatch-patch-v2\.json$/);
 });
 
 test("reset is reproducible", async ({ page }) => {

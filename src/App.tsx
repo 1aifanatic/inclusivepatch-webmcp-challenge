@@ -69,7 +69,7 @@ function Studio() {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-lg font-semibold tracking-[-0.035em] text-white">AccessTwin</h1>
+                <h1 className="truncate text-lg font-semibold tracking-[-0.035em] text-white">InclusivePatch</h1>
                 <span className="hidden rounded-full border border-white/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#b4c6bf] sm:inline">
                   WebMCP studio
                 </span>

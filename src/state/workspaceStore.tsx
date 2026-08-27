@@ -37,7 +37,7 @@ import type {
   WorkspaceState,
 } from "../domain/types";
 
-const STORAGE_KEY = "accesstwin.workspace.v1";
+const STORAGE_KEY = "inclusivepatch.workspace.v1";
 
 export interface WorkspaceSnapshot {
   phase: WorkspaceState["phase"];
@@ -420,7 +420,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     ) => {
       try {
         const beforeExport = stateRef.current;
-        const filename = `accesstwin-patch-v${beforeExport.checkoutVersion}.${format === "json" ? "json" : "md"}`;
+        const filename = `inclusivepatch-patch-v${beforeExport.checkoutVersion}.${format === "json" ? "json" : "md"}`;
         const content = serializeManifest(beforeExport, format);
         if (triggerDownload) downloadManifest(beforeExport, format);
         const current = commit((workspace) =>
