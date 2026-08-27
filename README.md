@@ -12,7 +12,9 @@
 
 **Demo video:** [Watch or download the 2:24 narrated walkthrough](https://github.com/1aifanatic/inclusivepatch-webmcp-challenge/releases/latest/download/inclusivepatch-demo.mp4)
 
-![InclusivePatch workspace showing the deliberately inaccessible checkout and shared review inspector](docs/screenshots/workspace.png)
+**30-second demo:** scan the checkout, stage six bounded remediations, and keep the user-facing wording decision human-controlled.
+
+![InclusivePatch scanning the inaccessible checkout, staging six remediations, and presenting the final wording for human review](docs/screenshots/inclusivepatch-demo.gif)
 
 InclusivePatch is a WebMCP-powered accessibility remediation workspace where a developer and ChatGPT repair a deliberately broken checkout together. The app exposes narrow site tools for scanning, inspecting evidence, staging bounded remediations, applying only current-version human approvals, replaying a deterministic keyboard journey, and exporting an auditable patch manifest.
 
