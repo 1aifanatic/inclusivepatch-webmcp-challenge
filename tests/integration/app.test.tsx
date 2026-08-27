@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import App from "../../src/App";
 
@@ -18,5 +18,18 @@ describe("human fallback workspace", () => {
     fireEvent.click(screen.getByRole("button", { name: /Reset demo/i }));
     expect(screen.getByText("No scan recorded")).toBeInTheDocument();
     expect(screen.getByText("v1")).toBeInTheDocument();
+  });
+
+  it("keeps the cancellation result after the replay promise unwinds", async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Run journey/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^Journey$/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Cancel replay/i }));
+
+    expect(await screen.findByText("Keyboard journey cancelled.")).toBeInTheDocument();
+    await act(async () => {
+      await new Promise((resolve) => window.setTimeout(resolve, 250));
+    });
+    expect(screen.getByText("Keyboard journey cancelled.")).toBeInTheDocument();
   });
 });

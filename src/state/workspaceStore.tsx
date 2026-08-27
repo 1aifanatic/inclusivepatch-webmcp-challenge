@@ -321,7 +321,17 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         }
         externalSignal?.removeEventListener("abort", abortFromExternal);
         const currentRun = stateRef.current.journey;
-        if (!currentRun || currentRun.id !== runId || currentRun.status !== "running") {
+        if (!currentRun || currentRun.id !== runId) {
+          return failure(new DomainError("INVALID_INPUT", "Journey was replaced by another workspace action."), {
+            journeyId: runId,
+            status: "cancelled",
+          });
+        }
+        if (currentRun.status === "cancelled") {
+          journeyControllerRef.current = null;
+          return success(stateRef.current, "Keyboard journey cancelled.", { journeyId: runId, status: "cancelled" });
+        }
+        if (currentRun.status !== "running") {
           return failure(new DomainError("INVALID_INPUT", "Journey was replaced by another workspace action."), {
             journeyId: runId,
             status: "cancelled",
