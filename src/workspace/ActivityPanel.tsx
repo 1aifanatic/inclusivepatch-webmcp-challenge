@@ -29,7 +29,7 @@ export function ActivityPanel() {
                 <td>
                   <strong>{record.action}</strong>
                   <span>{record.inputSummary}</span>
-                  <small>{record.toolName ?? record.id} · {new Date(record.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</small>
+                  <small>{record.toolName ?? record.id} / {new Date(record.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</small>
                 </td>
                 <td><span className={`actor-pill actor-${record.actor}`}>{record.actor}</span></td>
                 <td>v{record.checkoutVersion}<small>{record.workspacePhase.replaceAll("_", " ")}</small></td>

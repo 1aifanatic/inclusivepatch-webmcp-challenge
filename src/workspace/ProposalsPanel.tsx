@@ -45,7 +45,7 @@ export function ProposalsPanel() {
       <div className="panel-toolbar panel-toolbar-sticky sticky top-0 z-10 backdrop-blur">
         <div>
           <p className="eyebrow">Approval queue</p>
-          <p className="panel-summary">{currentProposals.length} current · {state.proposals.length} total</p>
+          <p className="panel-summary">{currentProposals.length} current / {state.proposals.length} total</p>
         </div>
         {lowRiskPending.length > 0 && (
           <button className="button-secondary" onClick={approveSafe} type="button">

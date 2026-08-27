@@ -51,7 +51,7 @@ export function IssuesPanel() {
       <div className="panel-toolbar">
         <div>
           <p className="eyebrow">Scan findings</p>
-          <p className="panel-summary">{openIssues.length} open · {state.issues.length - openIssues.length} fixed</p>
+          <p className="panel-summary">{openIssues.length} open / {state.issues.length - openIssues.length} fixed</p>
         </div>
         {openIssues.length > 0 && (
           <button className="button-secondary" onClick={stageAll} type="button">

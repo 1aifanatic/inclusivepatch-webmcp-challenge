@@ -15,7 +15,7 @@ export function JourneyPanel() {
       <div className="panel-toolbar">
         <div>
           <p className="eyebrow">Deterministic replay</p>
-          <p className="panel-summary">11 explicit assertions · version bound</p>
+          <p className="panel-summary">11 explicit assertions / version bound</p>
         </div>
         <label className="motion-control">
           <input checked={reducedMotion} onChange={(event) => setReducedMotion(event.target.checked)} type="checkbox" />
@@ -26,14 +26,14 @@ export function JourneyPanel() {
       <div className="p-4 sm:p-5">
         <div className="grid grid-cols-2 gap-3">
           <div className="comparison-stat">
-            <span>Baseline · v1</span>
+            <span>Baseline v1</span>
             <strong>{comparison.baselineIssueCount} issues</strong>
             <small className={comparison.baselineJourneyStatus === "failed" ? "text-danger" : ""}>
               Journey {comparison.baselineJourneyStatus}
             </small>
           </div>
           <div className="comparison-stat current">
-            <span>Current · v{comparison.currentVersion}</span>
+            <span>Current v{comparison.currentVersion}</span>
             <strong>{comparison.currentOpenIssueCount} open</strong>
             <small className={comparison.currentJourneyStatus === "passed" ? "text-success" : ""}>
               Journey {comparison.currentJourneyStatus}
@@ -62,7 +62,7 @@ export function JourneyPanel() {
                 </span>
                 <div>
                   <div className="flex items-center justify-between gap-4">
-                    <strong>{String(index + 1).padStart(2, "0")} · {event.label}</strong>
+                    <strong>{String(index + 1).padStart(2, "0")} / {event.label}</strong>
                     <span className={`journey-result ${event.status === "passed" ? "text-success" : "text-danger"}`}>
                       {event.status}
                     </span>

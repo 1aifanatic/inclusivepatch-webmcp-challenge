@@ -146,7 +146,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
             />
             <span>
               <strong>Standard</strong>
-              <small>3–5 business days</small>
+              <small>3-5 business days</small>
             </span>
             <b>$5</b>
           </label>
@@ -160,7 +160,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
             />
             <span>
               <strong>Express</strong>
-              <small>1–2 business days</small>
+              <small>1-2 business days</small>
             </span>
             <b>$14</b>
           </label>

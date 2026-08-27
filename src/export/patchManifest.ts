@@ -63,7 +63,7 @@ export function manifestAsMarkdown(manifest: PatchManifest): string {
             `| ${patch.proposalId} | ${patch.issueId} | ${patch.optionId} | ${JSON.stringify(patch.beforeValue)} | ${JSON.stringify(patch.appliedValue)} |`,
         )
         .join("\n")
-    : "| — | — | — | — | — |";
+    : "| - | - | - | - | - |";
   const rejected = manifest.rejectedProposals.length
     ? manifest.rejectedProposals
         .map((proposal) => `- ${proposal.proposalId} (${proposal.issueId}): ${proposal.reason}`)

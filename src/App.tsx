@@ -1,11 +1,11 @@
 import {
   Activity,
+  ArrowRight,
   CheckCircle2,
   CircleDot,
   FlaskConical,
   GitCompareArrows,
   ListChecks,
-  Play,
   Radio,
   RefreshCcw,
   Shield,
@@ -23,8 +23,6 @@ import { ProposalsPanel } from "./workspace/ProposalsPanel";
 
 type PanelName = "issues" | "proposals" | "journey" | "activity";
 
-const phases = ["BASELINE", "SCANNED", "HUMAN_REVIEW", "READY_TO_APPLY", "APPLIED", "VERIFIED"] as const;
-
 function Studio() {
   const { state, api, message } = useWorkspace();
   const [panel, setPanel] = useState<PanelName>("issues");
@@ -35,6 +33,17 @@ function Studio() {
   const pendingProposalCount = state.proposals.filter(
     (proposal) => proposal.checkoutVersion === state.checkoutVersion && ["pending", "approved"].includes(proposal.status),
   ).length;
+  const baselineProved = state.baselineJourney?.status === "failed";
+  const scanRecorded = state.issues.length > 0;
+  const fixesApplied = state.appliedHistory.length > 0 && openIssueCount === 0;
+  const journeyVerified = state.phase === "VERIFIED";
+  const guideMilestones = [
+    { label: "Baseline proof", detail: "Expected to fail", complete: baselineProved },
+    { label: "Scan checkout", detail: "Map 6 barriers", complete: scanRecorded },
+    { label: "Human review", detail: "Approve before apply", complete: fixesApplied },
+    { label: "Journey proof", detail: "Repeat 11 checks", complete: journeyVerified },
+  ];
+  const activeGuideIndex = state.checkoutVersion === 1 && !baselineProved ? 0 : !scanRecorded ? 1 : !fixesApplied ? 2 : 3;
 
   useEffect(() => {
     if (state.phase === "BASELINE" || state.phase === "SCANNED") setPanel("issues");
@@ -42,21 +51,58 @@ function Studio() {
     if (state.phase === "VERIFIED") setPanel("journey");
   }, [state.phase]);
 
-  const currentPhaseIndex = Math.max(
-    0,
-    phases.findIndex((phase) => phase === state.phase) >= 0
-      ? phases.findIndex((phase) => phase === state.phase)
-      : state.phase === "PROPOSALS_STAGED"
-        ? 2
-        : 0,
-  );
-
   const tabs: Array<{ id: PanelName; label: string; icon: typeof ListChecks; count?: number }> = [
     { id: "issues", label: "Issues", icon: ListChecks, ...(state.issues.length ? { count: openIssueCount } : {}) },
     { id: "proposals", label: "Proposals", icon: Sparkles, ...(pendingProposalCount ? { count: pendingProposalCount } : {}) },
     { id: "journey", label: "Journey", icon: GitCompareArrows },
     { id: "activity", label: "Activity", icon: Activity, count: state.activity.length },
   ];
+
+  const openPanel = (nextPanel: PanelName) => {
+    setPanel(nextPanel);
+    window.requestAnimationFrame(() => {
+      const inspector = document.querySelector(".inspector-column");
+      if (inspector instanceof HTMLElement && typeof inspector.scrollIntoView === "function") {
+        inspector.scrollIntoView({ block: "start" });
+      }
+    });
+  };
+
+  const guideAction = (() => {
+    if (!baselineProved && state.checkoutVersion === 1) {
+      return {
+        label: running ? "Baseline running" : "Run baseline proof",
+        disabled: running,
+        run: () => {
+          openPanel("journey");
+          void api.replay("human", false);
+        },
+      };
+    }
+    if (!scanRecorded) {
+      return {
+        label: "Scan checkout",
+        disabled: false,
+        run: () => {
+          openPanel("issues");
+          void api.scan();
+        },
+      };
+    }
+    if (!fixesApplied) {
+      const needsIssueReview = state.phase === "SCANNED" || state.phase === "APPLIED";
+      return {
+        label: state.phase === "APPLIED" ? "Review remaining issues" : state.phase === "SCANNED" ? "Review findings" : "Review proposals",
+        disabled: false,
+        run: () => openPanel(needsIssueReview ? "issues" : "proposals"),
+      };
+    }
+    return {
+      label: journeyVerified ? "View passing proof" : "Open verification",
+      disabled: false,
+      run: () => openPanel("journey"),
+    };
+  })();
 
   return (
     <div className="app-shell">
@@ -88,33 +134,42 @@ function Studio() {
               {webmcp.status === "available" && <b>{webmcp.toolNames.length}</b>}
             </div>
             <span className="header-metric"><b>v{state.checkoutVersion}</b><small>checkout</small></span>
-            <button
-              aria-label="Run journey"
-              className="header-button"
-              disabled={running}
-              onClick={() => void api.replay("human", false)}
-              type="button"
-            >
-              <Play aria-hidden="true" size={14} /> <span className="hidden sm:inline">Run journey</span>
-            </button>
             <button aria-label="Reset demo" className="header-button subtle" onClick={() => api.reset()} type="button">
               <RefreshCcw aria-hidden="true" size={14} /> <span className="hidden lg:inline">Reset demo</span>
             </button>
           </div>
         </div>
 
-        <div className="phase-rail" aria-label={`Workspace phase: ${state.phase.replaceAll("_", " ")}`}>
-          <div className="flex min-w-0 flex-1 items-center gap-1.5">
-            {phases.map((phase, index) => (
-              <div className={`phase-node ${index <= currentPhaseIndex ? "complete" : ""} ${phase === state.phase ? "current" : ""}`} key={phase}>
-                <span>{index < currentPhaseIndex ? <CheckCircle2 aria-hidden="true" size={12} /> : <CircleDot aria-hidden="true" size={10} />}</span>
-                <small>{phase.replaceAll("_", " ")}</small>
-              </div>
-            ))}
+        <div className="judge-guide" aria-label={`Judge walkthrough. Workspace phase: ${state.phase.replaceAll("_", " ")}`}>
+          <div className="judge-guide-intro">
+            <strong>Judge walkthrough</strong>
+            <span>One guarded path from failure to proof.</span>
           </div>
-          <div className="view-toggle" aria-label="Checkout view">
-            <button aria-pressed={viewingBaseline} onClick={() => setViewingBaseline(true)} type="button">Baseline</button>
-            <button aria-pressed={!viewingBaseline} onClick={() => setViewingBaseline(false)} type="button">Current</button>
+          <ol className="guide-path">
+            {guideMilestones.map((milestone, index) => (
+              <li
+                aria-current={index === activeGuideIndex ? "step" : undefined}
+                className={`${milestone.complete ? "complete" : ""} ${index === activeGuideIndex ? "current" : ""}`}
+                key={milestone.label}
+              >
+                <span className="guide-status">
+                  {milestone.complete ? <CheckCircle2 aria-hidden="true" size={14} /> : <CircleDot aria-hidden="true" size={12} />}
+                </span>
+                <span className="guide-copy">
+                  <strong>{milestone.label}</strong>
+                  <small>{milestone.detail}</small>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <div className="guide-controls">
+            <button className="guide-action" disabled={guideAction.disabled} onClick={guideAction.run} type="button">
+              {guideAction.label} <ArrowRight aria-hidden="true" size={14} />
+            </button>
+            <div className="view-toggle" aria-label="Checkout view">
+              <button aria-pressed={viewingBaseline} onClick={() => setViewingBaseline(true)} type="button">Baseline</button>
+              <button aria-pressed={!viewingBaseline} onClick={() => setViewingBaseline(false)} type="button">Current</button>
+            </div>
           </div>
         </div>
       </header>
@@ -175,7 +230,7 @@ function Studio() {
       </main>
 
       <footer className="app-footer">
-        <span>Synthetic data · Browser-local state · No accessibility certification claim</span>
+        <span>Synthetic data / Browser-local state / No accessibility certification claim</span>
         <span>Cloudflare Workers Static Assets</span>
       </footer>
 

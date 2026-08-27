@@ -14,16 +14,16 @@ test("baseline → reject → revise → apply → verified → export", async (
   await expect(page.getByRole("heading", { name: "InclusivePatch" })).toBeVisible();
   await expect(page.getByText(/WebMCP unavailable/i)).toBeVisible();
 
-  await page.getByRole("button", { name: /Run journey/i }).click();
+  await page.getByRole("button", { name: /Run baseline proof/i }).click();
   await expect(page.getByText("Keyboard journey failed.")).toBeVisible({ timeout: 10_000 });
 
   await page.getByRole("button", { name: "Issues" }).click();
   await page.getByRole("button", { name: /Run accessibility scan/i }).click();
-  await expect(page.getByText("6 open · 0 fixed")).toBeVisible();
+  await expect(page.getByText("6 open / 0 fixed")).toBeVisible();
   await page.getByRole("button", { name: /Stage all/i }).click();
 
   await page.getByRole("button", { name: /Proposals/ }).click();
-  await expect(page.getByText("6 current · 6 total")).toBeVisible();
+  await expect(page.getByText("6 current / 6 total")).toBeVisible();
   await page.getByRole("button", { name: /Approve low-risk/i }).click();
 
   const weakProposal = page.locator("article").filter({ hasText: "PROP-006" });
@@ -63,7 +63,7 @@ test("baseline → reject → revise → apply → verified → export", async (
 test("reset is reproducible", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Run accessibility scan/i }).click();
-  await expect(page.getByText("6 open · 0 fixed")).toBeVisible();
+  await expect(page.getByText("6 open / 0 fixed")).toBeVisible();
   await page.getByRole("button", { name: /Reset demo/i }).click();
   await expect(page.getByText("No scan recorded")).toBeVisible();
   await expect(page.getByText("v1")).toBeVisible();
@@ -71,8 +71,8 @@ test("reset is reproducible", async ({ page }) => {
 
 test("a running replay can be cancelled without losing normal controls", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: /Run journey/i }).click();
   await page.getByRole("button", { name: "Journey", exact: true }).click();
+  await page.getByRole("button", { name: /Run keyboard journey/i }).click();
   await page.getByRole("button", { name: /Cancel replay/i }).click();
   await expect(page.getByText("Keyboard journey cancelled.")).toBeVisible();
   await expect(page.getByRole("button", { name: /Run keyboard journey/i })).toBeEnabled();
@@ -89,7 +89,7 @@ test("WebMCP registration failures remain visible and the human UI remains usabl
   await expect(page.locator(".webmcp-pill")).toContainText("error");
   await expect(page.locator(".webmcp-pill")).toHaveAttribute("title", "registration denied for test");
   await page.getByRole("button", { name: /Run accessibility scan/i }).click();
-  await expect(page.getByText(/6 open\s*·\s*0 fixed/)).toBeVisible();
+  await expect(page.getByText(/6 open\s*\/\s*0 fixed/)).toBeVisible();
 });
 
 test("WebMCP tools register by phase and update the shared interface", async ({ page }) => {
@@ -133,7 +133,7 @@ test("WebMCP tools register by phase and update the shared interface", async ({ 
   });
   expect(scanResult.ok).toBe(true);
   expect(scanResult.data.openCount).toBe(6);
-  await expect(page.getByText("6 open · 0 fixed")).toBeVisible();
+  await expect(page.getByText("6 open / 0 fixed")).toBeVisible();
   await expect.poll(() => page.evaluate(() => [...window.__webmcpTools.keys()])).toContain("stage_fix");
 
   const stageResult = await page.evaluate(async () => {
@@ -161,6 +161,7 @@ test("WebMCP tools register by phase and update the shared interface", async ({ 
   expect(applyResult.ok).toBe(true);
   expect(applyResult.checkoutVersion).toBe(2);
   await expect(page.getByText("v2")).toBeVisible();
+  await expect(page.getByRole("button", { name: /Review remaining issues/i })).toBeVisible();
   await expect.poll(() => page.evaluate(() => [...window.__webmcpTools.keys()])).toEqual(
     expect.arrayContaining(["compare_versions", "undo_last_applied_fix", "export_patch_manifest"]),
   );

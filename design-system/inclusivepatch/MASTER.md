@@ -4,7 +4,7 @@
 
 **Product:** Developer-facing accessibility remediation SaaS workspace  
 **Direction:** Warm editorial minimalism with Swiss grid discipline  
-**Design dials:** Variance 4/10 · Motion 3/10 · Density 7/10
+**Design dials:** Variance 4/10 / Motion 3/10 / Density 5/10
 
 ## Design intent
 
@@ -42,8 +42,8 @@ Clay is reserved for focus, current state, selected evidence, and controlled war
 ## Shape and depth
 
 - Outer workspace panels: 18px radius.
-- Content cards: 12–14px radius.
-- Inputs and buttons: 8–10px radius.
+- Content cards: 12-14px radius.
+- Inputs and buttons: 8-10px radius.
 - Use one-pixel warm borders before shadows.
 - Shadows remain neutral and low-opacity; no glow, glass cards, or colored drop shadows.
 
@@ -58,7 +58,9 @@ Clay is reserved for focus, current state, selected evidence, and controlled war
 ## Layout rules
 
 - Desktop uses two independent workspace panels on a 12-column-inspired split.
-- The canvas and checkout stage use a subtle 24–28px grid to convey precision.
+- The sticky judge walkthrough names four outcome-based milestones and exposes one contextual next action.
+- Milestones use direct labels: Baseline proof, Scan checkout, Human review, and Journey proof. Do not replace them with generic numbered steps.
+- The canvas and checkout stage use a subtle 24-28px grid to convey precision.
 - At 900px the panels stack without horizontal scrolling.
 - Validate at 375px, 768px, 1024px, and 1440px.
 
