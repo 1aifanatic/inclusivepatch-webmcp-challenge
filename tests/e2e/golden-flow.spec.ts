@@ -48,6 +48,11 @@ test("baseline → reject → revise → apply → verified → export", async (
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/^inclusivepatch-patch-v2\.json$/);
 
+  await page.reload({ waitUntil: "networkidle" });
+  await expect(page.getByText("v2", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Journey", exact: true }).click();
+  await expect(page.getByText("Journey passed", { exact: true })).toBeVisible();
+
   await page
     .getByRole("navigation", { name: "Inspector panels" })
     .getByRole("button", { name: /Activity/ })
@@ -62,6 +67,29 @@ test("reset is reproducible", async ({ page }) => {
   await page.getByRole("button", { name: /Reset demo/i }).click();
   await expect(page.getByText("No scan recorded")).toBeVisible();
   await expect(page.getByText("v1")).toBeVisible();
+});
+
+test("a running replay can be cancelled without losing normal controls", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Run journey/i }).click();
+  await page.getByRole("button", { name: "Journey", exact: true }).click();
+  await page.getByRole("button", { name: /Cancel replay/i }).click();
+  await expect(page.getByText("Keyboard journey cancelled.")).toBeVisible();
+  await expect(page.getByRole("button", { name: /Run keyboard journey/i })).toBeEnabled();
+});
+
+test("WebMCP registration failures remain visible and the human UI remains usable", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(document, "modelContext", {
+      configurable: true,
+      value: { registerTool: () => Promise.reject(new Error("registration denied for test")) },
+    });
+  });
+  await page.goto("/");
+  await expect(page.locator(".webmcp-pill")).toContainText("error");
+  await expect(page.locator(".webmcp-pill")).toHaveAttribute("title", "registration denied for test");
+  await page.getByRole("button", { name: /Run accessibility scan/i }).click();
+  await expect(page.getByText(/6 open\s*·\s*0 fixed/)).toBeVisible();
 });
 
 test("WebMCP tools register by phase and update the shared interface", async ({ page }) => {

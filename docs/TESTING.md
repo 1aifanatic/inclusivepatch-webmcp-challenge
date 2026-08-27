@@ -8,6 +8,8 @@
 | Unit/integration | `pnpm run test` | Six probes, contrast, patch catalog, guards, state, replay, registration, fallback, reset |
 | Browser E2E | `pnpm run test:e2e` | Golden rejection/revision path, download, reset, mocked WebMCP lifecycle and visible updates |
 | Production build | `pnpm run build` | Cloudflare Vite build and generated deployment configuration |
+| Full local gate | `pnpm run verify` | Types, unit/integration tests, production build, and Chromium E2E in release order |
+| Live Worker smoke | `pnpm run test:production` | Security headers, SPA fallback, full golden flow, manifest contents, reload persistence, undo, reset, and browser errors |
 
 The WebMCP evaluation contract contains 20 cases in the PRD distribution: five golden prompt paraphrases, four partial requests, four rejection/revision requests, three undo/reapply requests, and four unsafe or ambiguous requests. Automated tests prove that every declared expected call is phase-available and runtime-schema-valid. They do not replace live probabilistic evaluation in ChatGPT.
 
@@ -24,6 +26,13 @@ For each eval case in `tests/webmcp/eval-cases.ts`:
 Release target: at least 18 of 20 complete correctly, with at least 18 of 20 selecting the correct first tool.
 
 ## Production smoke test
+
+Run the tracked headless smoke test after deployment:
+
+```bash
+pnpm run test:production
+# or: node scripts/verify-production.mjs https://your-worker.example.workers.dev
+```
 
 - Open the workers.dev URL without authentication.
 - Confirm zero console errors and no framework overlay.

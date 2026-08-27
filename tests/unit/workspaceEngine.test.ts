@@ -3,12 +3,17 @@ import {
   DomainError,
   applyApprovedProposals,
   approveProposal,
+  appendJourneyEvent,
+  compareVersions,
   createInitialWorkspaceState,
+  finishJourney,
   rejectProposal,
   scanWorkspace,
   stageProposal,
+  startJourney,
   undoLastAppliedFix,
 } from "../../src/domain/workspaceEngine";
+import { buildJourneyEvents } from "../../src/journey/journeyRunner";
 
 function scanned() {
   return scanWorkspace(createInitialWorkspaceState(), "human", undefined);
@@ -75,5 +80,49 @@ describe("proposal and approval invariants", () => {
     expect(state.checkoutVersion).toBe(2);
     expect(state.issues.every((issue) => issue.status === "fixed")).toBe(true);
     expect(state.proposals.every((proposal) => proposal.status === "applied")).toBe(true);
+  });
+
+  it("stales unselected current proposals and rejects duplicate IDs", () => {
+    let state = scanned();
+    state = stageProposal(state, { issueId: "A11Y-001", optionId: "add_email_label" }, "agent");
+    state = approveProposal(state, "PROP-001");
+    state = stageProposal(state, { issueId: "A11Y-002", optionId: "restore_focus_order" }, "agent");
+    state = approveProposal(state, "PROP-002");
+
+    expect(() => applyApprovedProposals(state, ["PROP-001", "PROP-001"], "agent")).toThrow(
+      /Duplicate proposal IDs/,
+    );
+    state = applyApprovedProposals(state, ["PROP-001"], "agent");
+    expect(state.proposals.find((proposal) => proposal.id === "PROP-002")?.status).toBe("stale");
+    expect(state.config.emailLabelEnabled).toBe(true);
+    expect(state.config.focusOrderMode).toBe("broken");
+  });
+
+  it("records a version-bound failed baseline and verified remediated comparison", () => {
+    let state = scanned();
+    state = startJourney(state);
+    for (const event of buildJourneyEvents(state.config)) state = appendJourneyEvent(state, event);
+    state = finishJourney(state, "failed", "human");
+    expect(state.baselineJourney?.status).toBe("failed");
+    expect(compareVersions(state).baselineJourneyStatus).toBe("failed");
+
+    state = {
+      ...state,
+      checkoutVersion: 2,
+      config: {
+        emailLabelEnabled: true,
+        focusOrderMode: "correct",
+        deliveryKeyboardTrapEnabled: false,
+        announceValidationErrors: true,
+        helperTextToken: "accessible",
+        continueAccessibleName: "Review and place order",
+      },
+      journey: null,
+    };
+    state = startJourney(state);
+    for (const event of buildJourneyEvents(state.config)) state = appendJourneyEvent(state, event);
+    state = finishJourney(state, "passed", "agent", "replay_keyboard_journey");
+    expect(state.phase).toBe("VERIFIED");
+    expect(compareVersions(state).currentJourneyStatus).toBe("passed");
   });
 });

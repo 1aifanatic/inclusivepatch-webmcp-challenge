@@ -10,6 +10,8 @@
 
 **Public source:** <https://github.com/1aifanatic/inclusivepatch-webmcp-challenge>
 
+**Demo video:** [Watch or download the 2:24 narrated walkthrough](https://github.com/1aifanatic/inclusivepatch-webmcp-challenge/releases/latest/download/inclusivepatch-demo.mp4)
+
 ![InclusivePatch workspace showing the deliberately inaccessible checkout and shared review inspector](docs/screenshots/workspace.png)
 
 InclusivePatch is a WebMCP-powered accessibility remediation workspace where a developer and ChatGPT repair a deliberately broken checkout together. The app exposes narrow site tools for scanning, inspecting evidence, staging bounded remediations, applying only current-version human approvals, replaying a deterministic keyboard journey, and exporting an auditable patch manifest.
@@ -103,9 +105,11 @@ pnpm run typecheck   # strict TypeScript, including tests
 pnpm run test        # deterministic unit, integration, and 20 eval-contract cases
 pnpm run test:e2e    # real Chromium golden flow, reset, downloads, and mocked WebMCP lifecycle
 pnpm run build       # production Cloudflare/Vite output
+pnpm run verify      # complete local release gate
+pnpm run test:production # headless smoke test of the deployed Worker
 ```
 
-The automated suite covers all six probes, contrast math, patch apply/undo, approval and stale-version guards, state transitions, 11 replay assertions, 20 WebMCP eval contracts, no-WebMCP fallback, localStorage reset, phase registration, visible tool-driven updates, download generation, and the complete rejection/revision journey. See [testing details](docs/TESTING.md).
+The automated suite covers all six probes, contrast math, patch apply/undo, approval and stale-version guards, state transitions, manifest contents, 11 replay assertions, 20 WebMCP eval contracts, unavailable/error WebMCP fallbacks, localStorage persistence and reset, cancellation, phase registration, visible tool-driven updates, download generation, and the complete rejection/revision journey. The production smoke test also verifies security headers, SPA fallback routing, persistence, undo, reset, and zero browser errors against the public Worker. See [testing details](docs/TESTING.md).
 
 ## Deploy to Cloudflare Workers
 

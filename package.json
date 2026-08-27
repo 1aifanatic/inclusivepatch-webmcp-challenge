@@ -11,9 +11,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:production": "node scripts/verify-production.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "deploy": "pnpm run build && wrangler deploy"
+    "deploy": "pnpm run build && wrangler deploy",
+    "verify": "pnpm run typecheck && pnpm run test && pnpm run build && pnpm run test:e2e"
   },
   "dependencies": {
     "axe-core": "^4.10.3",

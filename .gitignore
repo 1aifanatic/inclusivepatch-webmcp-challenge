@@ -6,5 +6,6 @@ coverage/
 playwright-report/
 test-results/
 .qa/
+videos/
 *.log
 .DS_Store
