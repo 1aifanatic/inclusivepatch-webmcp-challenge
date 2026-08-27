@@ -49,11 +49,11 @@ try {
     throw new Error("Production page content is unexpectedly sparse.");
   }
 
-  await page.getByRole("button", { name: /Run journey/i }).click();
+  await page.getByRole("button", { name: /Run baseline proof/i }).click();
   await page.getByText("Keyboard journey failed.").waitFor({ timeout: 10_000 });
   await page.getByRole("button", { name: "Issues", exact: true }).click();
   await page.getByRole("button", { name: /Run accessibility scan/i }).click();
-  await page.getByText(/6 open\s*·\s*0 fixed/).waitFor();
+  await page.getByText(/6 open\s*\/\s*0 fixed/).waitFor();
   await page.getByRole("button", { name: /Stage all/i }).click();
   await page.getByRole("button", { name: /Proposals/ }).click();
   await page.getByRole("button", { name: /Approve low-risk/i }).click();
