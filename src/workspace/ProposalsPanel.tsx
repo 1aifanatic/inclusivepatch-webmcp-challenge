@@ -10,11 +10,11 @@ function valueLabel(value: unknown): string {
 }
 
 const statusStyle: Record<FixProposal["status"], string> = {
-  pending: "bg-[#fff0dc] text-[#8f4d12]",
-  approved: "bg-[#e5f2eb] text-[#286146]",
-  rejected: "bg-[#fee9e4] text-[#9b2f1f]",
-  stale: "bg-[#ecefed] text-[#65716d]",
-  applied: "bg-[#dff0ea] text-[#225f44]",
+  pending: "status-badge status-pending",
+  approved: "status-badge status-approved",
+  rejected: "status-badge status-rejected",
+  stale: "status-badge status-stale",
+  applied: "status-badge status-applied",
 };
 
 export function ProposalsPanel() {
@@ -42,10 +42,10 @@ export function ProposalsPanel() {
 
   return (
     <div className="panel-scroll">
-      <div className="panel-toolbar sticky top-0 z-10 bg-[#fbfcfa]/95 backdrop-blur">
+      <div className="panel-toolbar panel-toolbar-sticky sticky top-0 z-10 backdrop-blur">
         <div>
           <p className="eyebrow">Approval queue</p>
-          <p className="mt-1 text-sm text-[#66736f]">{currentProposals.length} current · {state.proposals.length} total</p>
+          <p className="panel-summary">{currentProposals.length} current · {state.proposals.length} total</p>
         </div>
         {lowRiskPending.length > 0 && (
           <button className="button-secondary" onClick={approveSafe} type="button">
@@ -63,19 +63,19 @@ export function ProposalsPanel() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold tracking-[0.08em] text-[#53615c]">{proposal.id}</span>
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] ${statusStyle[proposal.status]}`}>
+                    <span className="proposal-id">{proposal.id}</span>
+                    <span className={statusStyle[proposal.status]}>
                       {proposal.status}
                     </span>
                     {proposal.risk === "medium" && (
-                      <span className="rounded-full bg-[#f2e9dc] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#815321]">
+                      <span className="status-badge status-human-review">
                         human wording
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-2 text-base font-semibold text-[#1f2d28]">{issue?.title ?? proposal.issueId}</h3>
+                  <h3 className="proposal-title">{issue?.title ?? proposal.issueId}</h3>
                 </div>
-                <span className="text-xs font-medium text-[#7a8782]">v{proposal.checkoutVersion}</span>
+                <span className="proposal-version">v{proposal.checkoutVersion}</span>
               </div>
 
               <div className="proposal-diff mt-4">
@@ -83,28 +83,28 @@ export function ProposalsPanel() {
                   <span>Before</span>
                   <strong>{valueLabel(proposal.beforeValue)}</strong>
                 </div>
-                <div aria-hidden="true" className="text-[#9aa49f]">→</div>
+                <div aria-hidden="true" className="diff-arrow">→</div>
                 <div>
                   <span>Proposed</span>
                   <strong>{valueLabel(proposal.proposedValue)}</strong>
                 </div>
               </div>
 
-              <p className="mt-4 text-sm leading-6 text-[#65726e]">{proposal.rationale}</p>
+              <p className="proposal-rationale">{proposal.rationale}</p>
               {proposal.supersedesProposalId && (
-                <p className="mt-3 flex items-center gap-2 text-xs font-medium text-[#53665e]">
+                <p className="revision-link">
                   <RotateCcw aria-hidden="true" size={13} /> Revised from {proposal.supersedesProposalId}
                 </p>
               )}
               {proposal.rejectionReason && (
-                <div className="mt-4 rounded-xl border border-[#f1c9be] bg-[#fff7f4] p-3 text-sm text-[#873c2d]">
+                <div className="rejection-note">
                   <strong className="block text-xs uppercase tracking-[0.08em]">Human rejection</strong>
                   <span className="mt-1 block">{proposal.rejectionReason}</span>
                 </div>
               )}
 
               {proposal.status === "pending" && isCurrent && (
-                <div className="mt-4 border-t border-[#e5e9e6] pt-4">
+                <div className="proposal-actions">
                   <label className="field-label" htmlFor={`reject-${proposal.id}`}>Rejection reason</label>
                   <input
                     className="studio-input"
@@ -128,7 +128,7 @@ export function ProposalsPanel() {
               )}
 
               {proposal.status === "rejected" && proposal.optionId === "name_final_action" && isCurrent && (
-                <div className="mt-4 border-t border-[#e5e9e6] pt-4">
+                <div className="proposal-actions">
                   <label className="field-label" htmlFor={`revise-${proposal.id}`}>Revised accessible name</label>
                   <input
                     className="studio-input"
@@ -157,7 +157,7 @@ export function ProposalsPanel() {
         })}
       </div>
 
-      <div className="sticky bottom-0 border-t border-[#dfe5e1] bg-white/95 p-4 backdrop-blur sm:p-5">
+      <div className="proposal-apply-bar sticky bottom-0 p-4 backdrop-blur sm:p-5">
         <button
           className="button-primary w-full py-3"
           disabled={approvedIds.length === 0 || state.journey?.status === "running"}
@@ -167,7 +167,7 @@ export function ProposalsPanel() {
           <GitCommitHorizontal aria-hidden="true" size={16} />
           Apply {approvedIds.length || "no"} approved {approvedIds.length === 1 ? "fix" : "fixes"}
         </button>
-        <p className="mt-2 text-center text-xs text-[#71807a]">Rejected, pending, and stale proposals are excluded by domain guards.</p>
+        <p className="guard-note">Rejected, pending, and stale proposals are excluded by domain guards.</p>
       </div>
     </div>
   );

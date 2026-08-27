@@ -15,9 +15,9 @@ export function JourneyPanel() {
       <div className="panel-toolbar">
         <div>
           <p className="eyebrow">Deterministic replay</p>
-          <p className="mt-1 text-sm text-[#66736f]">11 explicit assertions · version bound</p>
+          <p className="panel-summary">11 explicit assertions · version bound</p>
         </div>
-        <label className="flex items-center gap-2 text-xs font-medium text-[#5f6d68]">
+        <label className="motion-control">
           <input checked={reducedMotion} onChange={(event) => setReducedMotion(event.target.checked)} type="checkbox" />
           Reduced motion
         </label>
@@ -28,14 +28,14 @@ export function JourneyPanel() {
           <div className="comparison-stat">
             <span>Baseline · v1</span>
             <strong>{comparison.baselineIssueCount} issues</strong>
-            <small className={comparison.baselineJourneyStatus === "failed" ? "text-[#a23d2d]" : ""}>
+            <small className={comparison.baselineJourneyStatus === "failed" ? "text-danger" : ""}>
               Journey {comparison.baselineJourneyStatus}
             </small>
           </div>
           <div className="comparison-stat current">
             <span>Current · v{comparison.currentVersion}</span>
             <strong>{comparison.currentOpenIssueCount} open</strong>
-            <small className={comparison.currentJourneyStatus === "passed" ? "text-[#28714f]" : ""}>
+            <small className={comparison.currentJourneyStatus === "passed" ? "text-success" : ""}>
               Journey {comparison.currentJourneyStatus}
             </small>
           </div>
@@ -63,7 +63,7 @@ export function JourneyPanel() {
                 <div>
                   <div className="flex items-center justify-between gap-4">
                     <strong>{String(index + 1).padStart(2, "0")} · {event.label}</strong>
-                    <span className={`text-[10px] font-bold uppercase tracking-[0.08em] ${event.status === "passed" ? "text-[#28714f]" : "text-[#a23d2d]"}`}>
+                    <span className={`journey-result ${event.status === "passed" ? "text-success" : "text-danger"}`}>
                       {event.status}
                     </span>
                   </div>
@@ -73,14 +73,14 @@ export function JourneyPanel() {
               </div>
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-[#cfd8d3] p-6 text-center text-sm text-[#68756f]">
+            <div className="journey-empty p-6">
               No replay evidence yet. Run the baseline before applying fixes to preserve before-and-after proof.
             </div>
           )}
-          {running && <div className="mt-3 text-center text-xs font-semibold text-[#d16f2d]">Replay in progress…</div>}
+          {running && <div className="replay-progress">Replay in progress…</div>}
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-2 border-t border-[#e2e7e4] pt-5">
+        <div className="journey-actions mt-5 grid grid-cols-2 gap-2 pt-5">
           <button className="button-secondary" disabled={state.appliedHistory.length === 0 || running} onClick={() => api.undo()} type="button">
             <RotateCcw aria-hidden="true" size={15} /> Undo latest
           </button>

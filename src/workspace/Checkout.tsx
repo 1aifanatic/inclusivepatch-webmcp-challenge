@@ -41,12 +41,12 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
     <section aria-labelledby="checkout-title" className="checkout-shell">
       <div className="checkout-brandbar">
         <div>
-          <p className="eyebrow text-[#5d6d67]">Northstar Goods</p>
-          <h2 id="checkout-title" className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#17231f]">
+          <p className="eyebrow">Northstar Goods</p>
+          <h2 id="checkout-title" className="checkout-title">
             Secure checkout
           </h2>
         </div>
-        <div className="flex items-center gap-2 text-xs font-medium text-[#52645f]">
+        <div className="synthetic-order">
           <LockKeyhole aria-hidden="true" size={14} /> Synthetic order
         </div>
       </div>
@@ -60,7 +60,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
 
       <form
         id="checkout-fixture"
-        className="space-y-7 px-5 pb-7 pt-6 sm:px-7"
+        className="checkout-form space-y-7 px-5 pb-7 pt-6 sm:px-7"
         onSubmit={(event) => {
           event.preventDefault();
           setPaymentError(true);
@@ -121,8 +121,8 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
           </div>
           <p
             id="shipping-helper"
-            className={`relative mt-2 text-xs ${
-              effectiveConfig.helperTextToken === "accessible" ? "text-[#52645f]" : "text-[#a5afa9]"
+            className={`helper-text relative mt-2 ${
+              effectiveConfig.helperTextToken === "accessible" ? "helper-text-accessible" : "helper-text-low-contrast"
             } ${selectedClass("shipping-helper")}`}
           >
             We use this address only to calculate delivery.
@@ -132,10 +132,10 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
 
         <fieldset
           id="delivery-options"
-          className={`relative rounded-2xl border border-[#d9e1dd] p-4 ${selectedClass("delivery-options")}`}
+          className={`delivery-fieldset relative p-4 ${selectedClass("delivery-options")}`}
           onKeyDown={handleDeliveryKeyDown}
         >
-          <legend className="px-1 text-sm font-semibold text-[#24332e]">Delivery method</legend>
+          <legend className="delivery-legend px-1">Delivery method</legend>
           <label className="delivery-option">
             <input
               checked={delivery === "standard"}
@@ -166,7 +166,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
           </label>
           {effectiveConfig.deliveryKeyboardTrapEnabled && <IssueMarker id="A11Y-003" />}
           {trapNotice && (
-            <p className="mt-3 rounded-lg bg-[#fff3e4] px-3 py-2 text-xs font-medium text-[#8a4b10]" role="alert">
+            <p className="trap-notice mt-3 px-3 py-2" role="alert">
               Demo trap detected. Press Escape to move safely to payment.
             </p>
           )}
@@ -189,7 +189,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
             {!effectiveConfig.announceValidationErrors && <IssueMarker id="A11Y-004" />}
             {paymentError && (
               <p
-                className="mt-2 text-sm font-medium text-[#a63825]"
+                className="validation-error mt-2"
                 id="payment-error"
                 role={effectiveConfig.announceValidationErrors ? "status" : undefined}
               >
@@ -199,24 +199,24 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
           </div>
         </section>
 
-        <div className="rounded-2xl bg-[#f4f6f3] p-4">
+        <div className="order-summary p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[#476257] shadow-sm">
+              <span className="order-summary-icon">
                 <PackageCheck aria-hidden="true" size={20} />
               </span>
               <div>
-                <p className="text-sm font-semibold text-[#22312c]">{SYNTHETIC_CHECKOUT.order.item}</p>
-                <p className="mt-0.5 text-xs text-[#6d7b76]">Qty {SYNTHETIC_CHECKOUT.order.quantity}</p>
+                <p className="order-summary-title">{SYNTHETIC_CHECKOUT.order.item}</p>
+                <p className="order-summary-meta">Qty {SYNTHETIC_CHECKOUT.order.quantity}</p>
               </div>
             </div>
-            <strong className="text-sm text-[#22312c]">{SYNTHETIC_CHECKOUT.order.total}</strong>
+            <strong className="order-summary-total">{SYNTHETIC_CHECKOUT.order.total}</strong>
           </div>
         </div>
 
         <button
           aria-label={effectiveConfig.continueAccessibleName ?? undefined}
-          className={`relative flex w-full items-center justify-center gap-2 rounded-xl bg-[#172c26] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(23,44,38,.18)] transition hover:bg-[#23483c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#dd7a32] ${selectedClass("continue-action")}`}
+          className={`checkout-continue relative flex w-full items-center justify-center gap-2 px-4 ${selectedClass("continue-action")}`}
           id="continue-action"
           type="submit"
         >
@@ -224,7 +224,7 @@ export function Checkout({ config, selectedComponentId, viewingBaseline }: Check
           {!effectiveConfig.continueAccessibleName && <IssueMarker id="A11Y-006" />}
         </button>
 
-        <p className="flex items-center justify-center gap-2 text-center text-xs text-[#6d7b76]">
+        <p className="privacy-note">
           <ShieldCheck aria-hidden="true" size={14} /> No payment or personal data leaves this browser.
         </p>
       </form>

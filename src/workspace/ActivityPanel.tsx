@@ -8,9 +8,9 @@ export function ActivityPanel() {
       <div className="panel-toolbar">
         <div>
           <p className="eyebrow">Immutable local history</p>
-          <p className="mt-1 text-sm text-[#66736f]">{state.activity.length} recorded actions</p>
+          <p className="panel-summary">{state.activity.length} recorded actions</p>
         </div>
-        <History aria-hidden="true" className="text-[#7b8984]" size={19} />
+        <History aria-hidden="true" className="panel-toolbar-icon" size={19} />
       </div>
       <div className="overflow-x-auto p-4 sm:p-5">
         <table className="activity-table">

@@ -59,7 +59,7 @@ function Studio() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0d1715] text-[#17231f]">
+    <div className="app-shell">
       <header className="app-header">
         <div className="header-topline">
           <div className="flex min-w-0 items-center gap-3">
@@ -69,12 +69,12 @@ function Studio() {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-lg font-semibold tracking-[-0.035em] text-white">InclusivePatch</h1>
-                <span className="hidden rounded-full border border-white/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#b4c6bf] sm:inline">
+                <h1 className="brand-title">InclusivePatch</h1>
+                <span className="brand-badge hidden sm:inline-flex">
                   WebMCP studio
                 </span>
               </div>
-              <p className="hidden text-xs text-[#8fa39b] md:block">Repair with an agent. Approve every change. Prove the journey.</p>
+              <p className="brand-tagline hidden md:block">Repair with an agent. Approve every change. Prove the journey.</p>
             </div>
           </div>
 
@@ -84,11 +84,12 @@ function Studio() {
               title={webmcp.error ?? `${webmcp.toolNames.length} phase-aware tools registered`}
             >
               <Radio aria-hidden="true" size={13} />
-              <span className="hidden sm:inline">WebMCP </span>{webmcp.status.replace("registration-", "")}
+              <span className="webmcp-label"><span className="hidden sm:inline">WebMCP </span>{webmcp.status.replace("registration-", "")}</span>
               {webmcp.status === "available" && <b>{webmcp.toolNames.length}</b>}
             </div>
             <span className="header-metric"><b>v{state.checkoutVersion}</b><small>checkout</small></span>
             <button
+              aria-label="Run journey"
               className="header-button"
               disabled={running}
               onClick={() => void api.replay("human", false)}
@@ -96,7 +97,7 @@ function Studio() {
             >
               <Play aria-hidden="true" size={14} /> <span className="hidden sm:inline">Run journey</span>
             </button>
-            <button className="header-button subtle" onClick={() => api.reset()} type="button">
+            <button aria-label="Reset demo" className="header-button subtle" onClick={() => api.reset()} type="button">
               <RefreshCcw aria-hidden="true" size={14} /> <span className="hidden lg:inline">Reset demo</span>
             </button>
           </div>
@@ -122,7 +123,7 @@ function Studio() {
         <section className="workspace-column" aria-labelledby="live-checkout-heading">
           <div className="workspace-section-heading">
             <div>
-              <p className="eyebrow text-[#93a69e]">Shared live page</p>
+              <p className="eyebrow">Shared live page</p>
               <h2 id="live-checkout-heading">Checkout fixture</h2>
             </div>
             <span className="isolation-badge"><FlaskConical aria-hidden="true" size={13} /> Isolated barrier lab</span>
@@ -139,7 +140,7 @@ function Studio() {
         <section className="workspace-column inspector-column" aria-labelledby="inspector-heading">
           <div className="workspace-section-heading">
             <div>
-              <p className="eyebrow text-[#93a69e]">Review & verification</p>
+              <p className="eyebrow">Review & verification</p>
               <h2 id="inspector-heading">Inspector</h2>
             </div>
             <span className="isolation-badge"><Shield aria-hidden="true" size={13} /> Human guarded</span>

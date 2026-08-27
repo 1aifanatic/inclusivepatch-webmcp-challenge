@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useWorkspace } from "../state/workspaceStore";
 
 const severityStyles: Record<string, string> = {
-  critical: "bg-[#fee9e4] text-[#9b2f1f]",
-  serious: "bg-[#fff0dc] text-[#925012]",
-  moderate: "bg-[#edf0e4] text-[#53641e]",
-  minor: "bg-[#eaf0ee] text-[#50635c]",
+  critical: "severity-badge severity-badge-critical",
+  serious: "severity-badge severity-badge-serious",
+  moderate: "severity-badge severity-badge-moderate",
+  minor: "severity-badge severity-badge-minor",
 };
 
 export function IssuesPanel() {
@@ -51,7 +51,7 @@ export function IssuesPanel() {
       <div className="panel-toolbar">
         <div>
           <p className="eyebrow">Scan findings</p>
-          <p className="mt-1 text-sm text-[#66736f]">{openIssues.length} open · {state.issues.length - openIssues.length} fixed</p>
+          <p className="panel-summary">{openIssues.length} open · {state.issues.length - openIssues.length} fixed</p>
         </div>
         {openIssues.length > 0 && (
           <button className="button-secondary" onClick={stageAll} type="button">
@@ -72,14 +72,14 @@ export function IssuesPanel() {
             <span className={`severity-dot severity-${issue.severity}`} aria-hidden="true" />
             <span className="min-w-0 flex-1">
               <span className="flex items-center justify-between gap-3">
-                <span className="text-xs font-semibold tracking-[0.06em] text-[#6b7974]">{issue.id}</span>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] ${severityStyles[issue.severity]}`}>
+                <span className="issue-id">{issue.id}</span>
+                <span className={severityStyles[issue.severity]}>
                   {issue.status}
                 </span>
               </span>
-              <span className="mt-1 block truncate text-sm font-semibold text-[#24332e]">{issue.title}</span>
+              <span className="issue-title">{issue.title}</span>
             </span>
-            <ArrowUpRight aria-hidden="true" className="text-[#8b9994]" size={15} />
+            <ArrowUpRight aria-hidden="true" className="row-arrow" size={15} />
           </button>
         ))}
       </div>
@@ -89,15 +89,15 @@ export function IssuesPanel() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="eyebrow">{selected.detectionSource} evidence</p>
-              <h3 className="mt-1 text-lg font-semibold tracking-[-0.02em] text-[#17231f]" id={`detail-${selected.id}`}>
+              <h3 className="detail-title" id={`detail-${selected.id}`}>
                 {selected.title}
               </h3>
             </div>
-            <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${severityStyles[selected.severity]}`}>
+            <span className={severityStyles[selected.severity]}>
               {selected.severity}
             </span>
           </div>
-          <p className="mt-3 text-sm leading-6 text-[#5f6d68]">{selected.description}</p>
+          <p className="detail-description">{selected.description}</p>
           <ul className="mt-4 space-y-2">
             {selected.evidence.map((evidence) => (
               <li className="evidence-item" key={evidence}>{evidence}</li>
@@ -113,8 +113,8 @@ export function IssuesPanel() {
             return (
               <div className="fix-option" key={option.id}>
                 <div>
-                  <p className="text-sm font-semibold text-[#22312c]">{option.label}</p>
-                  <p className="mt-1 text-xs leading-5 text-[#687671]">{option.description}</p>
+                  <p className="fix-option-title">{option.label}</p>
+                  <p className="fix-option-description">{option.description}</p>
                 </div>
                 {selected.requiresHumanReview && (
                   <div className="mt-3">
@@ -126,7 +126,7 @@ export function IssuesPanel() {
                       onChange={(event) => setLabelText(event.target.value)}
                       value={labelText}
                     />
-                    <p className="mt-1.5 text-xs text-[#8a5a27]">Human review required. Try “Submit” to demonstrate rejection.</p>
+                    <p className="human-review-hint">Human review required. Try “Submit” to demonstrate rejection.</p>
                   </div>
                 )}
                 <button
