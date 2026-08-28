@@ -40,6 +40,9 @@ describe("20-case WebMCP evaluation contract", () => {
     it(`${evalCase.id} has an available, schema-valid expected call`, () => {
       const names = toolDefinitionsForPhase(evalCase.phase, api).map((tool) => tool.name);
       expect(names).toContain(evalCase.expectedCall.functionName);
+      for (const acceptableName of evalCase.acceptableFirstTools ?? [evalCase.expectedCall.functionName]) {
+        expect(names).toContain(acceptableName);
+      }
       const schema = schemas[evalCase.expectedCall.functionName as keyof typeof schemas];
       expect(schema.safeParse(evalCase.expectedCall.arguments).success).toBe(true);
       expect(evalCase.passCondition.length).toBeGreaterThan(10);

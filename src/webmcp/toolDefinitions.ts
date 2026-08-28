@@ -61,7 +61,7 @@ function allDefinitions(api: WorkspaceApi): Record<string, SiteToolDefinition> {
     get_workspace_state: {
       name: "get_workspace_state",
       title: "Get InclusivePatch workspace state",
-      description: "Read the current phase, version, findings, proposals, selection, and journey result before planning the next action.",
+      description: "Read the current phase, version, findings, proposals, selection, and journey result when the user asks for status or the required stable IDs are unknown. For an explicit phase-valid action with supplied IDs, call that narrow action tool directly.",
       inputSchema: JSON_SCHEMAS.empty,
       annotations: { readOnlyHint: true },
       execute: (input) => safeExecute(api, emptyInputSchema, input, () => agentOutput(api.getWorkspace())),

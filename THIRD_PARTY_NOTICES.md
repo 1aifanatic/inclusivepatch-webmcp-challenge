@@ -14,5 +14,6 @@ InclusivePatch uses the packages below. Versions shown are those resolved by `pn
 | Tailwind CSS | 4.3.3 | MIT | Interface styling |
 | Playwright Test | 1.62.1 | Apache-2.0 | Chromium end-to-end tests |
 | Vitest | 3.2.7 | MIT | Unit and integration tests |
+| tsx | 4.23.12 | MIT | Reproducible TypeScript agent-evaluation runner |
 
 No third-party logos, product photography, music, customer data, or copyrighted media are included in the product fixture or repository screenshot.

@@ -7,11 +7,12 @@
 | Strict types | `pnpm run typecheck` | Application, WebMCP browser declarations, test code, config |
 | Unit/integration | `pnpm run test` | Six probes, contrast, patch catalog, guards, state, replay, registration, fallback, reset |
 | Browser E2E | `pnpm run test:e2e` | Golden rejection/revision path, download, reset, mocked WebMCP lifecycle and visible updates |
+| Agent selection | `pnpm run test:agent` | 20 isolated phase-aware first-tool trials against the production descriptions and schemas |
 | Production build | `pnpm run build` | Cloudflare Vite build and generated deployment configuration |
 | Full local gate | `pnpm run verify` | Types, unit/integration tests, production build, and Chromium E2E in release order |
 | Live Worker smoke | `pnpm run test:production` | Security headers, SPA fallback, full golden flow, manifest contents, reload persistence, undo, reset, and browser errors |
 
-The WebMCP evaluation contract contains 20 cases in the PRD distribution: five golden prompt paraphrases, four partial requests, four rejection/revision requests, three undo/reapply requests, and four unsafe or ambiguous requests. Automated tests prove that every declared expected call is phase-available and runtime-schema-valid. They do not replace live probabilistic evaluation in ChatGPT.
+The WebMCP evaluation contract contains 20 cases in the PRD distribution: five golden prompt paraphrases, four partial requests, four rejection/revision requests, three undo/reapply requests, and four unsafe or ambiguous requests. Automated tests prove that every declared expected and safe-precondition call is phase-available and runtime-schema-valid. The dated independent sample achieved 20/20 correct first-tool selections; see the [agent evaluation record](AGENT_EVALUATION.md). It does not replace the final in-app ChatGPT browser check.
 
 ## Manual live-agent evaluation
 

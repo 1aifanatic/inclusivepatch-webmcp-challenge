@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["functionName", "argumentsJson"],
+  "properties": {
+    "functionName": { "type": "string" },
+    "argumentsJson": { "type": "string" }
+  }
+}

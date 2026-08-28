@@ -110,12 +110,13 @@ The implementation follows the current [Chrome WebMCP Imperative API](https://de
 pnpm run typecheck   # strict TypeScript, including tests
 pnpm run test        # deterministic unit, integration, and 20 eval-contract cases
 pnpm run test:e2e    # real Chromium golden flow, reset, downloads, and mocked WebMCP lifecycle
+pnpm run test:agent  # optional: 20 isolated model first-tool trials (authenticated Codex CLI)
 pnpm run build       # production Cloudflare/Vite output
 pnpm run verify      # complete local release gate
 pnpm run test:production # headless smoke test of the deployed Worker
 ```
 
-The automated suite covers all six probes, contrast math, patch apply/undo, approval and stale-version guards, state transitions, manifest contents, 11 replay assertions, 20 WebMCP eval contracts, unavailable/error WebMCP fallbacks, localStorage persistence and reset, cancellation, phase registration, visible tool-driven updates, download generation, and the complete rejection/revision journey. The production smoke test also verifies security headers, SPA fallback routing, persistence, undo, reset, and zero browser errors against the public Worker. See [testing details](docs/TESTING.md).
+The automated suite covers all six probes, contrast math, patch apply/undo, approval and stale-version guards, state transitions, manifest contents, 11 replay assertions, 20 WebMCP eval contracts, unavailable/error WebMCP fallbacks, localStorage persistence and reset, cancellation, phase registration, visible tool-driven updates, download generation, and the complete rejection/revision journey. The independent agent sample achieved 20/20 correct phase-aware first-tool selections. The production smoke test also verifies security headers, SPA fallback routing, persistence, undo, reset, and zero browser errors against the public Worker. See [testing details](docs/TESTING.md) and the [agent evaluation record](docs/AGENT_EVALUATION.md).
 
 ## Deploy to Cloudflare Workers
 
